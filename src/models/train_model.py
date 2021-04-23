@@ -68,11 +68,10 @@ if __name__ == '__main__':
         weights="detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl",
         n_classes=1,
         train_sets=("corn_crops_train", ),)
-    model.compile(n_iter=1000, resume=True)
+    model.compile(n_iter=1000, output_folder='./models/cornnetv2', resume=True)
 
     print('Training the Model\n')
-    output_dir = './models/cornnetv2'
-    model.fit(output_dir)
+    model.fit()
 
     print('Evaluating using the Model')
-    model.evaluate("corn_crops_test", output_dir)
+    model.evaluate("corn_crops_test", './models/cornnetv2')

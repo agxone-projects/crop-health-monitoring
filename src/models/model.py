@@ -27,18 +27,19 @@ class CornNetv2():
         self.cfg.MODEL.WEIGHTS = weights
         self.cfg.MODEL.ROI_HEADS.NUM_CLASSES = n_classes
 
-    def compile(self, n_iter, resume=False):
+    def compile(self, n_iter, output_folder, resume=False):
         self.cfg.SOLVER.IMS_PER_BATCH = 5
         self.cfg.SOLVER.BASE_LR = 0.0015
         self.cfg.SOLVER.MAX_ITER = n_iter
         self.cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128
 
+        self.cfg.OUTPUT_DIR = output_folder
+        os.makedirs(self.cfg.OUTPUT_DIR, exist_ok=True)
+
         self.trainer = DefaultTrainer(self.cfg)
         self.trainer.resume_or_load(resume=resume)
 
-    def fit(self, output_folder):
-        self.cfg.OUTPUT_DIR = output_folder
-        os.makedirs(self.cfg.OUTPUT_DIR, exist_ok=True)
+    def fit(self):
         self.trainer.train()
 
     def evaluate(self, test_set, output_folder):
