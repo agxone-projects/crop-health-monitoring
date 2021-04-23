@@ -1,4 +1,6 @@
 
-data/raw/
+detectron2_repo/
 
-data/interim/
+data/.DS_Store
+
+.DS_Store
