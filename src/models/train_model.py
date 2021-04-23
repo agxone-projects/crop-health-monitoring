@@ -47,17 +47,17 @@ def split_coco_annotation(annotations, split_ratio, train_json='train_anno.json'
 if __name__ == '__main__':
 
     # spliting the annotations
-    split_coco_annotation('../../data/interim/annotations.json', 0.9,
-                          '../../data/interim/train_annotations.json',
-                          '../../data/interim/test_annotations.json')
+    split_coco_annotation('./data/interim/annotations.json', 0.9,
+                          './data/interim/train_annotations.json',
+                          './data/interim/test_annotations.json')
 
     # registering the train and test datasets
     register_coco_instances("corn_crops_train", {},
-                            '../../data/interim/train_annotations.json',
-                            '../../data/interim')
+                            './data/interim/train_annotations.json',
+                            './data/interim')
     register_coco_instances("corn_crops_test", {},
-                            '../../data/interim/test_annotations.json',
-                            '../../data/interim')
+                            './data/interim/test_annotations.json',
+                            './data/interim')
 
     # retrieving metadata and dicts
     corn_crop_metadata = MetadataCatalog.get("corn_crops_train")
@@ -71,8 +71,8 @@ if __name__ == '__main__':
     model.compile(n_iter=1000, resume=True)
 
     print('Training the Model\n')
-    output_dir = '../../models/cornnetv2'
+    output_dir = './models/cornnetv2'
     model.fit(output_dir)
 
     print('Evaluating using the Model')
-    model.evaluate("corn_crops_test")
+    model.evaluate("corn_crops_test", output_dir)

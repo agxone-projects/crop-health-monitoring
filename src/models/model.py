@@ -20,7 +20,7 @@ class CornNetv2():
     def __init__(self, weights, n_classes, train_sets=()):
         self.cfg = get_cfg()
         self.cfg.merge_from_file(
-            "../../detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+            "./detectron2_repo/configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
         self.cfg.DATASETS.TRAIN = train_sets
         self.cfg.DATASETS.TEST = ()
         self.cfg.DATALOADER.NUM_WORKERS = 4
@@ -41,11 +41,11 @@ class CornNetv2():
         os.makedirs(self.cfg.OUTPUT_DIR, exist_ok=True)
         self.trainer.train()
 
-    def evaluate(self, test_set):
+    def evaluate(self, test_set, output_folder):
         self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.8
         predictor = DefaultPredictor(self.cfg)
         evaluator = COCOEvaluator(
-            test_set, self.cfg, False, output_dir="./output/")
+            test_set, self.cfg, False, output_dir=output_folder)
         val_loader = build_detection_test_loader(self.cfg, test_set)
         inference_on_dataset(self.trainer.model, val_loader, evaluator)
 
