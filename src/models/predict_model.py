@@ -1,3 +1,9 @@
+"""
+Created on Wed Apr 24 2021
+
+@author: chandralegend
+"""
+
 import argparse
 import os
 import cv2
@@ -6,7 +12,7 @@ from imantics import Mask
 from PIL import Image, ImageDraw
 from pycocotools import mask as pymask
 import json
-from imantics import Polygons, Mask
+from imantics import Mask
 import datetime
 
 from model import CornNetv2
