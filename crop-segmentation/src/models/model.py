@@ -1,3 +1,9 @@
+"""
+Created on Wed Apr 23 2021
+
+@author: chandralegend
+"""
+
 import os
 
 import detectron2

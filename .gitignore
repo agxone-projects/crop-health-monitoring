@@ -1,12 +1,2 @@
 
-detectron2_repo/
-
-data/.DS_Store
-
 .DS_Store
-
-data/interim/
-
-data/raw/
-
-.vscode/
