@@ -50,7 +50,7 @@ class CornNetv2():
         val_loader = build_detection_test_loader(self.cfg, test_set)
         inference_on_dataset(self.trainer.model, val_loader, evaluator)
 
-    def get_predict(self, score_thresh=0.7):
+    def get_predictor(self, score_thresh=0.7):
         self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = score_thresh
         predictor = DefaultPredictor(self.cfg)
         return predictor
