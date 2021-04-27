@@ -65,11 +65,14 @@ def get_segmentations(mask):
 
 
 def save_outputs(img, outputs, filename, savedir):
+    mask_img = Image.new('RGB', (200, 200))
     mask = output_to_mask(outputs)
-    mask = whole_crop_check(mask)
+    mask = whole_crop_check(mask)/255
+    mask = Image.fromarray(mask)
+    mask_img.paste(mask, (0, 0))
     annotations = get_segmentations(mask)
-    masked_output = cv2.bitwise_and(
-        img, img, mask=cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY))
+    masked_output = cv2.bitwise_and(img, img, mask=cv2.cvtColor(
+        np.array(mask_img), cv2.COLOR_BGR2GRAY))
     cv2.imwrite(os.path.join(savedir, f'mask_{filename}'), masked_output)
     return annotations
 
@@ -91,6 +94,7 @@ if __name__ == '__main__':
     predictor = model.get_predictor(args.thresh)
 
     images, filenames = img_resizer(args.imgdir)
+    print(filenames)
 
     output_anno_dict = {"images": [],
                         "annotations": [],
@@ -104,7 +108,7 @@ if __name__ == '__main__':
     img_id = 1
     anno_id = 1
 
-    for img, i in enumerate(images):
+    for i, img in enumerate(images):
         outputs = predictor(img)
         annos = save_outputs(img, outputs, filenames[i], args.savedir)
         num_annotations = 0
