@@ -17,8 +17,8 @@ from imantics import Mask
 
 
 def download_dataset():
-    print("Downloading Stitched Image from\n 'https://archive.org/download/stitched_image/stitched_image.jpg'")
-    wget.download('https://archive.org/download/stitched_image/stitched_image.jpg',
+    print("Downloading Stitched Image from\n 'https://archive.org/download/stitched_image_202104/stitched_image.jpg'")
+    wget.download('https://archive.org/download/stitched_image_202104/stitched_image.jpg',
                   './data/raw/stitched_image.jpg')
     print("Downloading Annotation from\n 'https://archive.org/download/cornnetv2_annotations/cornnetv2_annotations.json'")
     wget.download('https://archive.org/download/cornnetv2_annotations/cornnetv2_annotations.json',
@@ -119,13 +119,15 @@ def create_crops(stitch_img, stitch_anno, crop_size, dest_dir):
 if __name__ == '__main__':
     download_dataset()
 
-    stitch_img = cv2.imread('./data/raw/stitched_image.jpg')
+    Image.MAX_IMAGE_PIXELS = None
+
+    stitch_img = np.array(Image.open('./data/raw/stitched_image.jpg'))
     stitch_anno = './data/raw/annotations.json'
     destination = './data/interim'
 
     stitch_anno_obj = COCO(stitch_anno)
     annos = stitch_anno_obj.loadAnns(stitch_anno_obj.getAnnIds())
     height, width = stitch_img.shape[:2]
-    crop_size = 200
+    crop_size = 800
 
     create_crops(stitch_img, stitch_anno, crop_size, destination)
