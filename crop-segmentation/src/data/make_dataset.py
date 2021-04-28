@@ -30,7 +30,7 @@ def get_full_mask_array(annos, width, height):
     for anno in annos:
         segs = anno['segmentation']
         for seg in segs:
-            ImageDraw.Draw(mask).polygon(seg, fill=1)
+            ImageDraw.Draw(mask).polygon([x * 4 for x in seg], fill=1)
     return np.array(mask)
 
 
