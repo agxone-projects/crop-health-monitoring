@@ -29,7 +29,7 @@ def myconverter(obj):
         return obj.__str__()
 
 
-def img_resizer(imgdir, img_size=200):
+def img_resizer(imgdir, img_size=800):
     images = []
     image_file_names = [x for x in os.listdir(imgdir) if x.endswith('.jpg')]
     image_files = [os.path.join(imgdir, x) for x in image_file_names]
@@ -41,7 +41,7 @@ def img_resizer(imgdir, img_size=200):
     return images, image_file_names
 
 
-def output_to_mask(outputs, crop_size=200):
+def output_to_mask(outputs, crop_size=800):
     instances_dict = outputs['instances'].get_fields()
     pred_masks = instances_dict['pred_masks'].tolist()
     pred_masks = [np.array(pred_mask) for pred_mask in pred_masks]
@@ -51,7 +51,7 @@ def output_to_mask(outputs, crop_size=200):
     return anno_mask
 
 
-def whole_crop_check(crop_mask, crop_size=200, threshold=0.9):
+def whole_crop_check(crop_mask, crop_size=800, threshold=0.9):
     mask_area = cv2.countNonZero(crop_mask//255)
     if mask_area >= (crop_size**2) * threshold:
         white_crop = np.array([[True] * crop_size] * crop_size) * 255
@@ -65,7 +65,7 @@ def get_segmentations(mask):
 
 
 def save_outputs(img, outputs, filename, savedir):
-    mask_img = Image.new('RGB', (200, 200))
+    mask_img = Image.new('RGB', (800, 800))
     mask = output_to_mask(outputs)
     mask = whole_crop_check(mask)/255
     mask = Image.fromarray(mask)
@@ -113,7 +113,7 @@ if __name__ == '__main__':
         annos = save_outputs(img, outputs, filenames[i], args.savedir)
         num_annotations = 0
         for anno in annos:
-            seg_mask = Image.new('L', (200, 200), 0)
+            seg_mask = Image.new('L', (800, 800), 0)
             ImageDraw.Draw(seg_mask).polygon(anno, fill=1)
             seg_mask = pymask.encode(np.asfortranarray(seg_mask))
             seg_area = pymask.area(seg_mask)
@@ -122,8 +122,8 @@ if __name__ == '__main__':
                 "id": anno_id,
                 "image_id": img_id,
                 "category_id": 1,
-                "width": 200,
-                "height": 200,
+                "width": 800,
+                "height": 800,
                 "segmentation": [anno],
                 "iscrowd": 0,
                 "isbbox": 0,
@@ -137,8 +137,8 @@ if __name__ == '__main__':
         image = {
             "id": img_id,
             "category_ids": [1],
-            "width": 200,
-            "height": 200,
+            "width": 800,
+            "height": 800,
             "file_name": filenames[i],
             "num_annotations": num_annotations
         }
