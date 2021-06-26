@@ -1,0 +1,14 @@
+{
+	"name": "optimize_polygon",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"simplify-geometry": "github:seabre/simplify-geometry"
+	}
+}
